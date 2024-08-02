@@ -16,6 +16,13 @@ class Socket:
         Socket.__incoming_id = socket_id
 
     @staticmethod
+    async def close():
+        if Socket.__active:
+            await Socket.__active.__close()
+            Socket.__active = None
+            Socket.__incoming_id = None
+
+    @staticmethod
     def __validate_id(socket_id: str):
         if Socket.__incoming_id == socket_id:
             return
@@ -33,7 +40,12 @@ class Socket:
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.websocket.close()
+        await self.__close()
+
+    async def __close(self):
+        if self.websocket:
+            await self.websocket.close()
+            self.websocket = None
 
     async def listen(self):
         while True:
