@@ -1,4 +1,5 @@
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
+from .models import Status
 
 
 class Socket:
@@ -7,7 +8,7 @@ class Socket:
     __incoming_id = None
 
     @staticmethod
-    async def send(message):
+    async def send(message: Status):
         if Socket.__active:
             await Socket.__active.__send(message)
 
@@ -56,5 +57,5 @@ class Socket:
                 print(f"Socket {self.id} disconnected")
                 break
 
-    async def __send(self, message: str):
+    async def __send(self, message: Status):
         await self.websocket.send_json(message)
