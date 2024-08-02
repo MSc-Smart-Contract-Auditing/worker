@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+requests
+nest_asyncio
+websockets

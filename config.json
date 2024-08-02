@@ -1,0 +1,4 @@
+{
+    "ui_url": "http://localhost:4200/",
+    "worker_url": "http://localhost:5000/"
+}

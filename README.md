@@ -17,3 +17,11 @@
 - `SERVER_PORT` - exposed port of the API (Optional, `default=5000`). Need to update the notebook to listen to the same port in case it is changed
 
 6. Run the cell in `server.ipynb` to start up the server.
+
+
+## For local setup
+1. Run `make install`
+
+2. Select `.venv/bin/python` as environment.
+
+3. Run the cell in `server.ipynb` to start the server.
