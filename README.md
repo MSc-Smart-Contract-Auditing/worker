@@ -3,8 +3,8 @@
 ## Setup
 
 1. Set 2 environment variables:
-- ICL_USERNAME - Imperial shortname
-- ICL_PASSWORD - Password used for authenticating into the GPU cluster
+- `ICL_USERNAME` - Imperial shortname
+- `ICL_PASSWORD` - Password used for authenticating into the GPU cluster
 
 2. Upload the `remote/start-api.sh` to the home (`~/`) directory on the remote server.
 
