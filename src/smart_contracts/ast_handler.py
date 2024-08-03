@@ -49,7 +49,7 @@ class ASTHandler:
             )
 
             lookup[function_ast["id"]] = FunctionNode(
-                function=function, invocations=invocations
+                func=function, invocations=invocations
             )
 
         return lookup

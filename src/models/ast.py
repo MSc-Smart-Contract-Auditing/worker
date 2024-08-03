@@ -15,5 +15,5 @@ class Function(BaseModel):
 
 
 class FunctionNode(BaseModel):
-    function: Function
+    func: Function
     invocations: List[int]
