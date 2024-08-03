@@ -65,7 +65,6 @@ class ASTHandler:
                 node=function, invocations=invocations
             )
 
-        print(functions)
         return functions
 
     def get_source(self, function_name):
