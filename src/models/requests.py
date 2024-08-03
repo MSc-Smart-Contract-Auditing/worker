@@ -1,11 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
-
-
-class Contract(BaseModel):
-    name: str
-    ast: object
-    raw: str
+from src.models.ast import Contract
 
 
 class WorkUnit(BaseModel):

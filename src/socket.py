@@ -1,5 +1,5 @@
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
-from .models import Status
+from src.models.requests import Status
 
 
 class Socket:
