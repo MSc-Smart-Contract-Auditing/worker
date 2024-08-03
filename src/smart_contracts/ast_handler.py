@@ -1,16 +1,18 @@
 from src.smart_contracts.jmespath_queries import FUNCTION_QUERY, INVOCATION_QUERY
 from src.models.ast import Contract, Function, FunctionNode
-from typing import List
 from jqpy import jq
+
+from typing import List
 
 
 class ASTHandler:
 
-    def __init__(self, contract: Contract):
-        self.contract = contract
-        self.lookup = self.__prepare_functions(contract)
+    @staticmethod
+    def process_contract(contract: Contract) -> List[FunctionNode]:
+        return ASTHandler.__prepare_functions(contract)
 
-    def __fix_indentation(self, source_code):
+    @staticmethod
+    def __fix_indentation(source_code: str) -> str:
         lines = source_code.split("\n")
         if not lines:
             return source_code
@@ -27,12 +29,14 @@ class ASTHandler:
 
         return "\n".join(adjusted_lines)
 
-    def __extract_source_code(self, function_ast):
+    @staticmethod
+    def __extract_source_code(function_ast: object, source: str) -> str:
         start, length = map(int, function_ast["src"].split(":")[:2])
-        body = self.contract.raw[start : start + length]
-        return self.__fix_indentation(body)
+        body = source[start : start + length]
+        return ASTHandler.__fix_indentation(body)
 
-    def __prepare_functions(self, contract: Contract):
+    @staticmethod
+    def __prepare_functions(contract: Contract) -> List[FunctionNode]:
         function_asts = jq(FUNCTION_QUERY, contract.ast)
         lookup = {}
 
@@ -41,31 +45,11 @@ class ASTHandler:
             function = Function(
                 id=function_ast["id"],
                 name=function_ast["name"],
-                source=self.__extract_source_code(function_ast),
+                source=ASTHandler.__extract_source_code(function_ast, contract.raw),
             )
 
             lookup[function_ast["id"]] = FunctionNode(
-                node=function, invocations=invocations
+                function=function, invocations=invocations
             )
 
         return lookup
-
-    def get_ids(self):
-        return list(self.lookup.keys())
-
-
-import json
-from src.models.requests import WorkUnit
-
-with open("src/smart_contracts/compilation_result.json", "r") as file:
-    data = json.load(file)
-
-
-data = WorkUnit(**data)
-print(data.root.name)
-ASTHandler(data.root)
-
-
-for contract in data.dependencies:
-    print(contract.name)
-    ASTHandler(contract)

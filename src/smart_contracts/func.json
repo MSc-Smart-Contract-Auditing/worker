@@ -1,115 +1,47 @@
 {
-    "body": {
-        "id": 17,
-        "nodeType": "Block",
-        "src": "262:40:0",
-        "statements": [
-            {
-                "expression": {
-                    "arguments": [],
-                    "expression": {
-                        "argumentTypes": [],
-                        "expression": {
-                            "id": 13,
-                            "name": "store",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [],
-                            "referencedDeclaration": 8,
-                            "src": "279:5:0",
-                            "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Storage_$54",
-                                "typeString": "contract Storage"
-                            }
-                        },
-                        "id": 14,
-                        "isConstant": false,
-                        "isLValue": false,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberLocation": "285:8:0",
-                        "memberName": "retrieve",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 53,
-                        "src": "279:14:0",
-                        "typeDescriptions": {
-                            "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
-                            "typeString": "function () view external returns (uint256)"
-                        }
-                    },
-                    "id": 15,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "kind": "functionCall",
-                    "lValueRequested": false,
-                    "nameLocations": [],
-                    "names": [],
-                    "nodeType": "FunctionCall",
-                    "src": "279:16:0",
-                    "tryCall": false,
-                    "typeDescriptions": {
-                        "typeIdentifier": "t_uint256",
-                        "typeString": "uint256"
-                    }
-                },
-                "functionReturnParameters": 12,
-                "id": 16,
-                "nodeType": "Return",
-                "src": "272:23:0"
+    "arguments": [],
+    "expression": {
+        "argumentTypes": [],
+        "expression": {
+            "id": 24,
+            "name": "this",
+            "nodeType": "Identifier",
+            "overloadedDeclarations": [],
+            "referencedDeclaration": 4294967268,
+            "src": "332:4:0",
+            "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Owner_$47",
+                "typeString": "contract Owner"
             }
-        ]
+        },
+        "id": 26,
+        "isConstant": false,
+        "isLValue": false,
+        "isPure": false,
+        "lValueRequested": false,
+        "memberLocation": "337:5:0",
+        "memberName": "dummy",
+        "nodeType": "MemberAccess",
+        "referencedDeclaration": 19,
+        "src": "332:10:0",
+        "typeDescriptions": {
+            "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
+            "typeString": "function () view external returns (uint256)"
+        }
     },
-    "functionSelector": "12065fe0",
-    "id": 18,
-    "implemented": true,
-    "kind": "function",
-    "modifiers": [],
-    "name": "getBalance",
-    "nameLocation": "219:10:0",
-    "nodeType": "FunctionDefinition",
-    "parameters": {
-        "id": 9,
-        "nodeType": "ParameterList",
-        "parameters": [],
-        "src": "229:2:0"
-    },
-    "returnParameters": {
-        "id": 12,
-        "nodeType": "ParameterList",
-        "parameters": [
-            {
-                "constant": false,
-                "id": 11,
-                "mutability": "mutable",
-                "name": "",
-                "nameLocation": "-1:-1:-1",
-                "nodeType": "VariableDeclaration",
-                "scope": 18,
-                "src": "253:7:0",
-                "stateVariable": false,
-                "storageLocation": "default",
-                "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                },
-                "typeName": {
-                    "id": 10,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "253:7:0",
-                    "typeDescriptions": {
-                        "typeIdentifier": "t_uint256",
-                        "typeString": "uint256"
-                    }
-                },
-                "visibility": "internal"
-            }
-        ],
-        "src": "252:9:0"
-    },
-    "scope": 31,
-    "src": "210:92:0",
-    "stateMutability": "view",
-    "virtual": false,
-    "visibility": "public"
+    "id": 27,
+    "isConstant": false,
+    "isLValue": false,
+    "isPure": false,
+    "kind": "functionCall",
+    "lValueRequested": false,
+    "nameLocations": [],
+    "names": [],
+    "nodeType": "FunctionCall",
+    "src": "332:12:0",
+    "tryCall": false,
+    "typeDescriptions": {
+        "typeIdentifier": "t_uint256",
+        "typeString": "uint256"
+    }
 }
