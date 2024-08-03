@@ -3,4 +3,4 @@ uvicorn
 requests
 nest_asyncio
 websockets
-jmespath
+jqpy

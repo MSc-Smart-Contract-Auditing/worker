@@ -1,14 +1,13 @@
-import jmespath
-
-from src.smart_contracts.jmes import FUNCTION_QUERY, INVOCATION_QUERY
+from src.smart_contracts.jmespath_queries import FUNCTION_QUERY, INVOCATION_QUERY
 from src.models.ast import Contract, Function, FunctionSignature, FunctionNodeAbstract
 from typing import List
+from jqpy import jq
 
 
 class ASTHandler:
+
     def __init__(self, contract: Contract):
         self.contract = contract
-        self.alias = contract.name.split("/")[-1].split(".")[0]
         self.functions = self.__prepare_functions(contract)
 
     def __fix_indentation(self, source_code):
@@ -33,45 +32,31 @@ class ASTHandler:
         body = self.contract.raw[start : start + length]
         return self.__fix_indentation(body)
 
-    def __extract_invocations(self, function_ast) -> List[FunctionSignature]:
-        invocations = jmespath.search(INVOCATION_QUERY, function_ast)
-        signatures: List[FunctionSignature] = []
+    def __extract_dependencies(self, function_ast):
+        invocations = jq(INVOCATION_QUERY, function_ast)
 
         for invocation in invocations:
-            if not (
-                invocation["contract"] and invocation["contract"].startswith("contract")
-            ):
-                continue
-
-            invocation["contract"] = invocation["contract"].split(" ")[-1]
-            signatures.append(FunctionSignature(**invocation))
-
-        return signatures
+            print(invocation)
 
     def __prepare_functions(self, contract: Contract):
-        functions = {}
-        function_asts = jmespath.search(FUNCTION_QUERY, contract.ast)
+        function_asts = jq(FUNCTION_QUERY, contract.ast)
 
         for function_ast in function_asts:
-            function = Function(
-                **{
-                    "contract": self.alias,
-                    "name": function_ast["name"],
-                    "source": self.__extract_source_code(function_ast),
-                }
-            )
-            invocations = self.__extract_invocations(function_ast)
-            functions[function.name] = FunctionNodeAbstract(
-                node=function, invocations=invocations
-            )
+            self.__extract_dependencies(function_ast)
 
-        return functions
 
-    def get_source(self, function_name):
-        return self.functions[function_name].node.source
+import json
+from src.models.requests import WorkUnit
 
-    def get_node(self, function_name):
-        return self.functions[function_name]
+with open("src/smart_contracts/compilation_result.json", "r") as file:
+    data = json.load(file)
 
-    def get_function_names(self):
-        return list(self.functions.keys())
+
+data = WorkUnit(**data)
+print(data.root.name)
+ASTHandler(data.root)
+
+
+for contract in data.dependencies:
+    print(contract.name)
+    ASTHandler(contract)
