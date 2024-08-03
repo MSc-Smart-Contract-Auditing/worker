@@ -9,32 +9,32 @@ class SocketService:
 
     @staticmethod
     async def send(message: Status):
-        if Socket.__active:
-            await Socket.__active.__send(message)
+        if SocketService.__active:
+            await SocketService.__active.__send(message)
 
     @staticmethod
     def register_incoming_id(socket_id: str):
-        Socket.__incoming_id = socket_id
+        SocketService.__incoming_id = socket_id
 
     @staticmethod
     async def close():
-        if Socket.__active:
-            await Socket.__active.__close()
-            Socket.__active = None
-            Socket.__incoming_id = None
+        if SocketService.__active:
+            await SocketService.__active.__close()
+            SocketService.__active = None
+            SocketService.__incoming_id = None
 
     @staticmethod
     def __validate_id(socket_id: str):
-        if Socket.__incoming_id == socket_id:
+        if SocketService.__incoming_id == socket_id:
             return
         raise WebSocketException("Invalid Socket ID")
 
     def __init__(self, websocket: WebSocket, socket_id: str):
-        Socket.__validate_id(socket_id)
+        SocketService.__validate_id(socket_id)
 
         self.websocket = websocket
         self.id = socket_id
-        Socket.__active = self
+        SocketService.__active = self
 
     async def __aenter__(self):
         await self.websocket.accept()
