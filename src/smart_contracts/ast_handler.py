@@ -1,5 +1,5 @@
 from src.smart_contracts.jmespath_queries import FUNCTION_QUERY, INVOCATION_QUERY
-from src.models.ast import Contract, Function, FunctionSignature, FunctionNodeAbstract
+from src.models.ast import Contract, Function, FunctionNode
 from typing import List
 from jqpy import jq
 
@@ -8,7 +8,7 @@ class ASTHandler:
 
     def __init__(self, contract: Contract):
         self.contract = contract
-        self.functions = self.__prepare_functions(contract)
+        self.lookup = self.__prepare_functions(contract)
 
     def __fix_indentation(self, source_code):
         lines = source_code.split("\n")
@@ -32,17 +32,26 @@ class ASTHandler:
         body = self.contract.raw[start : start + length]
         return self.__fix_indentation(body)
 
-    def __extract_dependencies(self, function_ast):
-        invocations = jq(INVOCATION_QUERY, function_ast)
-
-        for invocation in invocations:
-            print(invocation)
-
     def __prepare_functions(self, contract: Contract):
         function_asts = jq(FUNCTION_QUERY, contract.ast)
+        lookup = {}
 
         for function_ast in function_asts:
-            self.__extract_dependencies(function_ast)
+            invocations = jq(INVOCATION_QUERY, function_ast)
+            function = Function(
+                id=function_ast["id"],
+                name=function_ast["name"],
+                source=self.__extract_source_code(function_ast),
+            )
+
+            lookup[function_ast["id"]] = FunctionNode(
+                node=function, invocations=invocations
+            )
+
+        return lookup
+
+    def get_ids(self):
+        return list(self.lookup.keys())
 
 
 import json
