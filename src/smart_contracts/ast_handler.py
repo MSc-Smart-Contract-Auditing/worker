@@ -1,8 +1,8 @@
 import jmespath
-import json
 
 from src.smart_contracts.jmes import FUNCTION_QUERY, INVOCATION_QUERY
 from src.models.ast import Contract, Function, FunctionSignature, FunctionNodeAbstract
+from typing import List
 
 
 class ASTHandler:
@@ -33,10 +33,16 @@ class ASTHandler:
         body = self.contract.raw[start : start + length]
         return self.__fix_indentation(body)
 
-    def __extract_invocations(self, function_ast):
+    def __extract_invocations(self, function_ast) -> List[FunctionSignature]:
         invocations = jmespath.search(INVOCATION_QUERY, function_ast)
-        signatures = []
+        signatures: List[FunctionSignature] = []
+
         for invocation in invocations:
+            if not (
+                invocation["contract"] and invocation["contract"].startswith("contract")
+            ):
+                continue
+
             invocation["contract"] = invocation["contract"].split(" ")[-1]
             signatures.append(FunctionSignature(**invocation))
 
@@ -45,11 +51,8 @@ class ASTHandler:
     def __prepare_functions(self, contract: Contract):
         functions = {}
         function_asts = jmespath.search(FUNCTION_QUERY, contract.ast)
-        test = function_asts[1]
-        with open("src/smart_contracts/func.json", "w") as file:
-            json.dump(test, file, ensure_ascii=False, indent=4)
 
-        for function_ast in function_asts[1:2]:
+        for function_ast in function_asts:
             function = Function(
                 **{
                     "contract": self.alias,
@@ -62,6 +65,7 @@ class ASTHandler:
                 node=function, invocations=invocations
             )
 
+        print(functions)
         return functions
 
     def get_source(self, function_name):
@@ -72,10 +76,3 @@ class ASTHandler:
 
     def get_function_names(self):
         return list(self.functions.keys())
-
-
-with open("src/smart_contracts/compilation_result.json", "r") as file:
-    data = json.load(file)
-
-root = Contract(**data["root"])
-handler = ASTHandler(root)
