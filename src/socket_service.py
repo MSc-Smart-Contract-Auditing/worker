@@ -2,7 +2,7 @@ from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 from src.models.requests import Status
 
 
-class Socket:
+class SocketService:
 
     __active = None
     __incoming_id = None
