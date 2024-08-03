@@ -1,4 +1,3 @@
-import json
 from typing import List
 from src.smart_contracts.ast_handler import ASTHandler
 from src.models.ast import FunctionNode
@@ -50,22 +49,3 @@ class DependencyTree:
             "main": function_node.function.source,
             "dependencies": self.__traverse(function_node.invocations, 0),
         }
-
-
-with open("src/smart_contracts/compilation_result.json", "r") as file:
-    data = json.load(file)
-
-data = WorkUnit(**data)
-dt = DependencyTree(data)
-
-
-for item in dt.lookup.items():
-    print(item)
-
-print()
-print()
-
-result = dt.tree(46)
-print(result["main"])
-for dependency in result["dependencies"]:
-    print(dependency)
