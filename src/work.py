@@ -13,23 +13,23 @@ def get_dependency_tree(data: WorkUnit):
 # TODO: If the UI never connects persist the result for sometime
 # and return it when the UI tries to connect
 async def process_work(work: WorkUnit):
-    await SocketService.send({"status": "building_dt"})
+    # await SocketService.send({"status": "building_dt"})
 
-    dt = get_dependency_tree(work)
+    # dt = get_dependency_tree(work)
 
     # data = WorkUnit(**data)
     # dt = DependencyTree(data)
 
-    for item in dt.lookup.items():
-        print(item)
+    # for item in dt.lookup.items():
+    #     print(item)
 
-    print()
-    print()
+    # print()
+    # print()
 
-    result = dt.tree(46)
-    print(result["main"])
-    for dependency in result["dependencies"]:
-        print(dependency)
+    # result = dt.tree(46)
+    # print(result["main"])
+    # for dependency in result["dependencies"]:
+    #     print(dependency)
 
     steps = 5
     for i in range(steps):
