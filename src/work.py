@@ -17,8 +17,8 @@ async def process_work(work: WorkUnit):
 
     dt = get_dependency_tree(work)
 
-    # data = WorkUnit(**data)
-    # dt = DependencyTree(data)
+    data = WorkUnit(**data)
+    dt = DependencyTree(data)
 
     for item in dt.lookup.items():
         print(item)
