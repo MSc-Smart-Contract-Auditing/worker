@@ -1,7 +1,8 @@
-from src.smart_contracts.jmespath_queries import FUNCTION_QUERY, INVOCATION_QUERY
 from src.models.ast import Contract, Function, FunctionNode
-from jqpy import jq
-
+from src.smart_contracts.query_utils import (
+    get_function_definitions,
+    get_referenced_declarations,
+)
 from typing import List
 
 
@@ -37,11 +38,11 @@ class ASTHandler:
 
     @staticmethod
     def __prepare_functions(contract: Contract) -> List[FunctionNode]:
-        function_asts = jq(FUNCTION_QUERY, contract.ast)
+        function_asts = get_function_definitions(contract.ast)
         lookup = {}
 
         for function_ast in function_asts:
-            invocations = jq(INVOCATION_QUERY, function_ast)
+            invocations = get_referenced_declarations(function_ast)
             function = Function(
                 id=function_ast["id"],
                 name=function_ast["name"],

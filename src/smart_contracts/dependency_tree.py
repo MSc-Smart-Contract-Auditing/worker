@@ -15,7 +15,7 @@ class DependencyTree:
         }
 
         main_contract_nodes = ASTHandler.process_contract(data.root)
-        self.main_ids = main_contract_nodes.keys()
+        self.main_ids = list(main_contract_nodes.keys())
         self.lookup.update(main_contract_nodes)
         self.max_depth = max_depth
 
@@ -36,7 +36,7 @@ class DependencyTree:
         return ret
 
     def get_main_ids(self):
-        return self.main_handler.get_ids()
+        return self.main_ids
 
     def tree(self, id: int):
 
