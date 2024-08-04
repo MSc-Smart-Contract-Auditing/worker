@@ -1,7 +1,3 @@
-import os
-from pathlib import Path
-
-
 class URL:
 
     @staticmethod
@@ -16,13 +12,3 @@ class URL:
 
     def __str__(self):
         return self.base
-
-
-class WorkingDirectory:
-    @staticmethod
-    def set(directory: Path | str):
-        os.environ["WORK_DIR"] = str(directory)
-
-    @staticmethod
-    def get() -> Path:
-        return Path(os.environ.get("WORK_DIR", ""))
