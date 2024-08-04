@@ -1,6 +1,16 @@
 from pydantic import BaseModel
-from typing import List, Optional, Dict
-from src.models.ast import FunctionNode
+from typing import List, Optional
+from src.models.ast import Contract
+
+
+class WorkUnit(BaseModel):
+    root: Contract
+    dependencies: List[Contract]
+
+
+class ProcessRequest(BaseModel):
+    socket: str
+    work: WorkUnit
 
 
 class Progress(BaseModel):
@@ -13,13 +23,3 @@ class Status(BaseModel):
     progress: Optional[Progress] = None
     done: bool = False
     result: Optional[str] = None
-
-
-class WorkUnit(BaseModel):
-    lookup: Dict[int, FunctionNode]
-    mainIds: List[int]
-
-
-class Request(BaseModel):
-    socket: str
-    work: WorkUnit

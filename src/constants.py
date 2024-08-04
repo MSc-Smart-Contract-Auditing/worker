@@ -1,7 +1,7 @@
 import json
-from src.utils import URL, WorkingDirectory
+from src.utils import URL
 
-with open(WorkingDirectory.get() / "config.json", "r") as f:
+with open("config.json", "r") as f:
     config = json.load(f)
 
 WORKER_URL = URL(config["worker_url"])
