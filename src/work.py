@@ -18,11 +18,10 @@ async def process_work(work: WorkUnit):
     main_ids = dt.get_main_ids()
 
     for idx, id in enumerate(main_ids):
-        print("Analyzing", id)
         await SocketService.send(
             {
                 "status": "analyzing",
-                "progress": {"current": idx, "total": len(main_ids)},
+                "progress": {"current": idx + 1, "total": len(main_ids)},
             }
         )
         codeblocks = dt.tree(id)
