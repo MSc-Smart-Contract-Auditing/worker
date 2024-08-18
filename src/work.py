@@ -37,13 +37,13 @@ async def process_work(work: WorkUnit):
     # await SocketService.send({"status": "finishing"})
 
     if len(vulnerabilities) == 0:
-        output = """There are no detected vulnerabilities in the provided contract!
+        result = """There are no detected vulnerabilities in the provided contract!
 
 However, this model can make mistakes. Do not resort to this tool as a sole measure of security."""
     elif len(vulnerabilities) == 1:
-        output = output[0]
+        result = vulnerabilities[0]
     else:
-        output = MODEL.merge(vulnerabilities)
+        result = MODEL.merge(vulnerabilities)
 
-    await SocketService.send({"status": "complete", "done": True, "result": output})
+    await SocketService.send({"status": "complete", "done": True, "result": result})
     await SocketService.close()
