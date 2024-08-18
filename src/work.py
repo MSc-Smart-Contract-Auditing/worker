@@ -22,7 +22,7 @@ async def process_work(work: WorkUnit):
         await SocketService.send(
             {
                 "status": "analyzing",
-                "progress": {"current": idx + 1, "total": len(main_ids)},
+                "progress": {"current": idx + 0.01, "total": len(main_ids)},
             }
         )
         codeblocks = dt.tree(id)
@@ -36,16 +36,15 @@ async def process_work(work: WorkUnit):
 
         results.append(output + "\n\n" + solution)
 
-    # await SocketService.send({"status": "finishing"})
-
-    if len(results) == 0:
-        result = """There are no detected vulnerabilities in the provided contract!
-
-However, this model can make mistakes. Do not resort to this tool as a sole measure of security."""
+    if len(results) > 1:
+        # await SocketService.send({"status": "finilizing"})
+        result = MODEL.merge(results)
     elif len(results) == 1:
         result = results[0]
     else:
-        result = MODEL.merge(results)
+        result = """There are no detected vulnerabilities in the provided contract!
+
+However, this model can make mistakes. Do not resort to this tool as a sole measure of security."""
 
     await SocketService.send({"status": "complete", "done": True, "result": result})
     await SocketService.close()
