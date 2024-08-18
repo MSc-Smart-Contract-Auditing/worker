@@ -16,7 +16,9 @@ async def process_work(work: WorkUnit):
     dt = DependencyTree(work)
 
     for id in dt.get_main_ids():
-        print(dt.tree(id))
+        codeblocks = dt.tree(id)
+        input = codeblocks["main"] + "\n\n" + codeblocks["dependencies"].join("\n\n")
+        print(input)
 
     steps = 5
     for i in range(steps):
