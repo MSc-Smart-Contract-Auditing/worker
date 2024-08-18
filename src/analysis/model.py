@@ -61,7 +61,7 @@ class Model:
 
         outputs = self.model.generate(
             inputs,
-            max_new_tokens=512,
+            max_new_tokens=1024,
             do_sample=True,
             top_k=1,
             top_p=0.95,
