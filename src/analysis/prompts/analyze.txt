@@ -3,6 +3,7 @@ If there is a vulnerability please provide a description of the vulnearblity in 
 Describe how an attacker would be able to take advantage of the vulnerability so the explanation is even more clear.
 
 Output only the description of the vulnerability and the attacking vector. No additional information is needed.
+If you are outputting code please surround it with single backticks for inline and triple backticks for blocks of code.
 
 If there is no vulnerability output "There is no vulnearbility".
 
