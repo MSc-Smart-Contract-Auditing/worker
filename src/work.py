@@ -36,13 +36,12 @@ async def process_work(work: WorkUnit):
 
         await SocketService.send(
             {
-                "status": "analyzing",
+                "status": "analyzing" if idx + 1 < len(main_ids) else "finilizing",
                 "progress": {"current": idx + 1, "total": len(main_ids)},
             }
         )
 
     if len(results) > 1:
-        await SocketService.send({"status": "finilizing"})
         result = MODEL.merge(results)
     elif len(results) == 1:
         result = results[0]
