@@ -14,8 +14,9 @@ async def process_work(work: WorkUnit):
     await asyncio.sleep(0.5)
     await SocketService.send({"status": "building_dt"})
     dt = DependencyTree(work)
-    print("Built dependency tree")
     main_ids = dt.get_main_ids()
+
+    vulnerabilities = []
 
     for idx, id in enumerate(main_ids):
         await SocketService.send(
@@ -27,7 +28,22 @@ async def process_work(work: WorkUnit):
         codeblocks = dt.tree(id)
         input = codeblocks["main"] + "\n\n" + "\n\n".join(codeblocks["dependencies"])
         output = MODEL.analyze(input)
-        print(output)
+
+        if output.beginswith("There is no vulnerability"):
+            continue
+
+        vulnerabilities.append(output)
+
+    # await SocketService.send({"status": "finishing"})
+
+    if len(vulnerabilities) == 0:
+        output = """There are no detected vulnerabilities in the provided contract!
+
+However, this model can make mistakes. Do not resort to this tool as a sole measure of security."""
+    elif len(vulnerabilities) == 1:
+        output = output[0]
+    else:
+        output = MODEL.merge(vulnerabilities)
 
     await SocketService.send({"status": "complete", "done": True, "result": output})
     await SocketService.close()
