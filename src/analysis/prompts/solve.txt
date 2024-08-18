@@ -1,0 +1,8 @@
+Below is some solidity code and a description of a vulnerability that the code contains.
+
+Explain how to mitigate or fix the vulnerability.
+Codeblocks:
+{}
+
+Vulnerability:
+{}

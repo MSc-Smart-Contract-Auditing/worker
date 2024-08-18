@@ -16,7 +16,7 @@ async def process_work(work: WorkUnit):
     dt = DependencyTree(work)
     main_ids = dt.get_main_ids()
 
-    vulnerabilities = []
+    results = []
 
     for idx, id in enumerate(main_ids):
         await SocketService.send(
@@ -32,18 +32,20 @@ async def process_work(work: WorkUnit):
         if output.startswith("There is no vulnerability"):
             continue
 
-        vulnerabilities.append(output)
+        solution = MODEL.solve(codeblocks, output)
+
+        results.append(output + "\n\n" + solution)
 
     # await SocketService.send({"status": "finishing"})
 
-    if len(vulnerabilities) == 0:
+    if len(results) == 0:
         result = """There are no detected vulnerabilities in the provided contract!
 
 However, this model can make mistakes. Do not resort to this tool as a sole measure of security."""
-    elif len(vulnerabilities) == 1:
-        result = vulnerabilities[0]
+    elif len(results) == 1:
+        result = results[0]
     else:
-        result = MODEL.merge(vulnerabilities)
+        result = MODEL.merge(results)
 
     await SocketService.send({"status": "complete", "done": True, "result": result})
     await SocketService.close()

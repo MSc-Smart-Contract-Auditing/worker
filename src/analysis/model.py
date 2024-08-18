@@ -15,6 +15,9 @@ with open(WORKING_DIR / "src/analysis/prompts/analyze.txt") as f:
 with open(WORKING_DIR / "src/analysis/prompts/merge.txt") as f:
     merge_prompt = f.read()
 
+with open(WORKING_DIR / "src/analysis/prompts/solve_prompt.txt") as f:
+    solve_prompt = f.read()
+
 MODEL_PATH = model_config["model_path"]
 
 
@@ -34,29 +37,24 @@ class Model:
             device_map="auto",
         )
 
-    def analyze(self, codeblocks: str) -> str:
-        messages = [{"role": "user", "content": analyze_prompt.format(codeblocks)}]
-        inputs = self.tokenizer.apply_chat_template(
-            messages, add_generation_prompt=True, return_tensors="pt"
-        ).to(self.model.device)
+    def generate_messages(self, value):
+        return [{"role": "user", "content": value}]
 
-        outputs = self.model.generate(
-            inputs,
-            max_new_tokens=512,
-            do_sample=True,
-            top_k=1,
-            top_p=0.95,
-            num_return_sequences=1,
-            eos_token_id=self.tokenizer.eos_token_id,
-        )
-        return self.tokenizer.decode(
-            outputs[0][len(inputs[0]) :], skip_special_tokens=True
-        )
+    def analyze(self, codeblocks: str) -> str:
+        messages = self.generate_messages(analyze_prompt.format(codeblocks))
+        return self.prompt(messages)
 
     def merge(self, audits: List[str]) -> str:
-        messages = [
-            {"role": "user", "content": merge_prompt.format("\n\n".join(audits))}
-        ]
+        messages = self.generate_messages(merge_prompt.format("\n\n".join(audits)))
+        return self.prompt(messages)
+
+    def solve(self, codeblocks: str, vulnearbility: str) -> str:
+        messages = self.generate_messages(
+            solve_prompt.format(codeblocks, vulnearbility)
+        )
+        return self.prompt(messages)
+
+    def prompt(self, messages: List[object]) -> str:
         inputs = self.tokenizer.apply_chat_template(
             messages, add_generation_prompt=True, return_tensors="pt"
         ).to(self.model.device)
