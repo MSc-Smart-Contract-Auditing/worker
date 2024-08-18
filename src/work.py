@@ -18,26 +18,25 @@ async def process_work(work: WorkUnit):
 
     results = []
 
+    await SocketService.send({"status": "analyzing"})
     for idx, id in enumerate(main_ids):
-        await SocketService.send(
-            {
-                "status": "analyzing",
-                "progress": {"current": idx + 0.01, "total": len(main_ids)},
-            }
-        )
         codeblocks = dt.tree(id)
         input = codeblocks["main"] + "\n\n" + "\n\n".join(codeblocks["dependencies"])
         output = MODEL.analyze(input)
 
-        if output.startswith("There is no vulnerability"):
-            continue
+        if not output.startswith("There is no vulnerability"):
+            solution = MODEL.solve(codeblocks, output)
+            results.append(output + "\n\n" + solution)
 
-        solution = MODEL.solve(codeblocks, output)
-
-        results.append(output + "\n\n" + solution)
+        await SocketService.send(
+            {
+                "status": "analyzing",
+                "progress": {"current": idx + 1, "total": len(main_ids)},
+            }
+        )
 
     if len(results) > 1:
-        # await SocketService.send({"status": "finilizing"})
+        await SocketService.send({"status": "finilizing"})
         result = MODEL.merge(results)
     elif len(results) == 1:
         result = results[0]
