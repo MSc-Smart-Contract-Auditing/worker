@@ -15,7 +15,7 @@ with open(WORKING_DIR / "src/analysis/prompts/analyze.txt") as f:
 with open(WORKING_DIR / "src/analysis/prompts/merge.txt") as f:
     merge_prompt = f.read()
 
-with open(WORKING_DIR / "src/analysis/prompts/solve_prompt.txt") as f:
+with open(WORKING_DIR / "src/analysis/prompts/solve.txt") as f:
     solve_prompt = f.read()
 
 MODEL_PATH = model_config["model_path"]
