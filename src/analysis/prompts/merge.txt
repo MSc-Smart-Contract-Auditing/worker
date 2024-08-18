@@ -1,0 +1,7 @@
+Below are some Solidity vulenarblity audits.
+Please combine these audits in a coherent text without missing too much information.
+Do not repeat information more than once even if multiple audits contain the same information
+If you are outputting code please surround it with single (`) or triple (```) backticks depending wether the code is inline or block respectively.
+
+Audits:
+{}
