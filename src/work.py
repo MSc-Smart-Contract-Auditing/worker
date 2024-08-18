@@ -29,4 +29,4 @@ async def process_work(work: WorkUnit):
         output = MODEL.analyze(input)
 
     await SocketService.send({"status": "complete", "done": True, "result": output})
-    await SocketService.close()
+    # await SocketService.close()
