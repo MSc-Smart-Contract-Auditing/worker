@@ -25,7 +25,6 @@ async def process_work(work: WorkUnit):
         codeblocks = dt.tree(id)
         input = codeblocks["main"] + "\n\n" + "\n\n".join(codeblocks["dependencies"])
         output = MODEL.analyze(input)
-        print(output)
 
-    await SocketService.send({"status": "complete", "done": True, "result": audit})
+    await SocketService.send({"status": "complete", "done": True, "result": output})
     await SocketService.close()
