@@ -29,7 +29,7 @@ async def process_work(work: WorkUnit):
         input = codeblocks["main"] + "\n\n" + "\n\n".join(codeblocks["dependencies"])
         output = MODEL.analyze(input)
 
-        if output.beginswith("There is no vulnerability"):
+        if output.startswith("There is no vulnerability"):
             continue
 
         vulnerabilities.append(output)
