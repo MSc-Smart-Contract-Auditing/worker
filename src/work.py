@@ -5,6 +5,8 @@ from dummy_response import audit
 
 from src.smart_contracts.dependency_tree import DependencyTree
 
+from src.analysis.model import MODEL
+
 
 def get_dependency_tree(data: WorkUnit):
     return DependencyTree(data)

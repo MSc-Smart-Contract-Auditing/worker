@@ -16,11 +16,15 @@ MODEL_PATH = model_config["model_path"]
 
 class Model:
     def __init__(self, model_path=MODEL_PATH):
+        self.model_path = model_path
+
+    def load(self):
+
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_path, trust_remote_code=True
+            self.model_path, trust_remote_code=True
         )
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_path,
+            self.model_path,
             trust_remote_code=True,
             torch_dtype=torch.bfloat16,
             device_map="auto",
@@ -36,7 +40,7 @@ class Model:
             inputs,
             max_new_tokens=512,
             do_sample=True,
-            top_k=25,
+            top_k=1,
             top_p=0.95,
             num_return_sequences=1,
             eos_token_id=self.tokenizer.eos_token_id,
