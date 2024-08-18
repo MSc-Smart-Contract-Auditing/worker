@@ -36,7 +36,7 @@ async def process_work(work: WorkUnit):
 
         await SocketService.send(
             {
-                "status": "analyzing" if idx + 1 < len(main_ids) else "finilizing",
+                "status": "analyzing" if idx + 1 < len(main_ids) else "finalizing",
                 "progress": {"current": idx + 1, "total": len(main_ids)},
             }
         )
