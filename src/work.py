@@ -25,6 +25,12 @@ async def process_work(work: WorkUnit):
         output = MODEL.analyze(input)
 
         if not output.startswith("There is no vulnerability"):
+            await SocketService.send(
+                {
+                    "status": "solving",
+                    "progress": {"current": idx + 1, "total": len(main_ids)},
+                }
+            )
             solution = MODEL.solve(codeblocks, output)
             results.append(output + "\n\n" + solution)
 
