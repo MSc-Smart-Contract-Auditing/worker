@@ -14,18 +14,18 @@ async def process_work(work: WorkUnit):
     await SocketService.send({"status": "building_dt"})
 
     dt = DependencyTree(work)
-
-    for id in dt.get_main_ids():
+    main_ids = dt.get_main_ids()
+    for idx, id in enumerate(main_ids):
+        await SocketService.send(
+            {
+                "status": "analyzing",
+                "progress": {"current": idx, "total": len(main_ids)},
+            }
+        )
         codeblocks = dt.tree(id)
         input = codeblocks["main"] + "\n\n" + "\n\n".join(codeblocks["dependencies"])
-        print(input)
-
-    steps = 5
-    for i in range(steps):
-        await asyncio.sleep(0.5)
-        await SocketService.send(
-            {"status": "analyzing", "progress": {"current": i + 1, "total": steps}}
-        )
+        output = MODEL.analyze(input)
+        print(output)
 
     await SocketService.send({"status": "complete", "done": True, "result": audit})
     await SocketService.close()
