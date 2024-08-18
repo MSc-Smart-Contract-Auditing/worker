@@ -12,10 +12,12 @@ from src.analysis.model import MODEL
 # and return it when the UI tries to connect
 async def process_work(work: WorkUnit):
     await SocketService.send({"status": "building_dt"})
-
     dt = DependencyTree(work)
+    print("Built dependency tree")
     main_ids = dt.get_main_ids()
+
     for idx, id in enumerate(main_ids):
+        print("Analyzing", id)
         await SocketService.send(
             {
                 "status": "analyzing",
