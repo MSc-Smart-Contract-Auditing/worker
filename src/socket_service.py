@@ -37,10 +37,12 @@ class SocketService:
         SocketService.__active = self
 
     async def __aenter__(self):
+        print("Connection accepted!")
         await self.websocket.accept()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        print("Connection closed!")
         await self.__close()
 
     async def __close(self):
