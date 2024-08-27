@@ -9,6 +9,7 @@ class SocketService:
 
     @staticmethod
     async def send(message: Status):
+        print(SocketService.__active)
         if SocketService.__active:
             await SocketService.__active.__send(message)
 
