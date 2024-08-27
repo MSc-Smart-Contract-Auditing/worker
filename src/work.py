@@ -11,7 +11,6 @@ from src.analysis.model import MODEL
 # TODO: If the UI never connects persist the result for sometime
 # and return it when the UI tries to connect
 async def process_work(work: WorkUnit):
-    await asyncio.sleep(5)
     print("Starting tree")
     await SocketService.send({"status": "building_dt"})
     dt = DependencyTree(work)
