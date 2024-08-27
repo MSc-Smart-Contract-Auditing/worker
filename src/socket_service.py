@@ -20,6 +20,7 @@ class SocketService:
     @staticmethod
     async def close():
         if SocketService.__active:
+            print("Connection closed by worker!")
             await SocketService.__active.__close()
             SocketService.__active = None
             SocketService.__incoming_id = None
@@ -43,7 +44,7 @@ class SocketService:
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        print("Connection closed!")
+        print("Connection closed externally!")
         await self.__close()
 
     async def __close(self):
