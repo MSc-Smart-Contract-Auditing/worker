@@ -8,6 +8,10 @@ class SocketService:
     __incoming_id = None
 
     @staticmethod
+    def is_active():
+        return SocketService.__active
+
+    @staticmethod
     async def send(message: Status):
         print(SocketService.__active)
         if SocketService.__active:

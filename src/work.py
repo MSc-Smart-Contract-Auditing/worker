@@ -9,7 +9,7 @@ from src.analysis.model import MODEL
 
 
 async def wait_for_connection():
-    while SocketService.__active is None:
+    while not SocketService.is_active():
         await asyncio.sleep(0.1)
 
 
