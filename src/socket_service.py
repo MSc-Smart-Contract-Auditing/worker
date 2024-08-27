@@ -9,9 +9,10 @@ class SocketService:
 
     @staticmethod
     async def send(message: Status):
-        print(SocketService.__active)
         if SocketService.__active:
             await SocketService.__active.__send(message)
+        else:
+            print("UI did not connect yet. Omitting update")
 
     @staticmethod
     def register_incoming_id(socket_id: str):
