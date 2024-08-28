@@ -17,7 +17,6 @@ async def wait_for_connection():
 # and return it when the UI tries to connect
 async def process_work(work: WorkUnit):
     await wait_for_connection()
-    print("Starting tree")
     await SocketService.send({"status": "building_dt"})
     dt = DependencyTree(work)
     main_ids = dt.get_main_ids()
