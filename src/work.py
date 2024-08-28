@@ -8,10 +8,15 @@ from src.smart_contracts.dependency_tree import DependencyTree
 from src.analysis.model import MODEL
 
 
+async def wait_for_connection():
+    while not SocketService.is_active():
+        await asyncio.sleep(0.1)
+
+
 # TODO: If the UI never connects persist the result for sometime
 # and return it when the UI tries to connect
 async def process_work(work: WorkUnit):
-    await asyncio.sleep(0.5)
+    await wait_for_connection()
     await SocketService.send({"status": "building_dt"})
     dt = DependencyTree(work)
     main_ids = dt.get_main_ids()

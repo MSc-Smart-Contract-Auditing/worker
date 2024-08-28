@@ -8,7 +8,12 @@ class SocketService:
     __incoming_id = None
 
     @staticmethod
+    def is_active():
+        return SocketService.__active
+
+    @staticmethod
     async def send(message: Status):
+        print(SocketService.__active)
         if SocketService.__active:
             await SocketService.__active.__send(message)
 
@@ -19,6 +24,7 @@ class SocketService:
     @staticmethod
     async def close():
         if SocketService.__active:
+            print("Connection closed by worker!")
             await SocketService.__active.__close()
             SocketService.__active = None
             SocketService.__incoming_id = None
@@ -37,10 +43,12 @@ class SocketService:
         SocketService.__active = self
 
     async def __aenter__(self):
+        print("Connection accepted!")
         await self.websocket.accept()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        print("Connection closed externally!")
         await self.__close()
 
     async def __close(self):
